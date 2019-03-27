@@ -1,10 +1,5 @@
 <!--new-->
-<?php 
-    $link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 
-    "https" : "http") . "://" . $_SERVER['HTTP_HOST'] .  
-    $_SERVER['REQUEST_URI']; 
-    $link; 
-?>
+
 <div class="new">
 		<div class="container">
 			<div class="title-info wow fadeInUp animated" data-wow-delay=".5s">
@@ -17,7 +12,7 @@
                     ?>
                 <div class="col-md-3 new-grid simpleCart_shelfItem wow flipInY animated" data-wow-delay=".4s">
 					<div class="new-top">
-						<a href="single.html"><img src="<?=$link.$postFeature['thumb']?>" class="img-responsive" alt="" /></a>
+						<a href="single.html"><img src="<?=$postFeature['thumb']?>" class="img-responsive" alt="" /></a>
 						<div class="new-text">
 							<ul>
 								<li><a class="item_add" href=""> Mua Ngay</a></li>
@@ -32,12 +27,22 @@
 							<span class="on">☆</span>
 							<span class="on">☆</span>
 							<span class="on">☆</span>
-							<span>☆</span>
+							<span class="on">☆</span>
 						</div>
 						<h5><a class="name" href="single.html"><?=$postFeature['name']?></a></h5>
 						<div class="ofr">
-							<p class="pric1"><del>$2000.00</del></p>
-							<p><span class="item_price">$500.00</span></p>
+						<?php 
+							if($postFeature['fake_price']){
+								?>
+									<p class="pric1"><del><?=number_format($postFeature['price'])?> đ</del></p>
+									<p><span class="item_price"><?=number_format($postFeature['fake_price'])?> đ</span></p>
+								<?php
+							}else{
+								?>
+									<p><span class="item_price"><?=number_format($postFeature['price'])?> đ</span></p>
+								<?php
+							}
+							?>
 						</div>
 						<div class="ofr ofr-p">
 							<h4 class="ofr-title"><?=$postFeature['rank']?></h4>

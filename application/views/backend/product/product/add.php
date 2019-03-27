@@ -247,11 +247,12 @@ if (isset($categorys) && is_array($categorys)) {
                             </div>
                             <div  class="form-group col-md-3">
                                 <select id='rank' name='rank' class="form-control">
-                                        <option  <?php if (isset($post['rank']) && $post['rank'] == 'dong') {echo 'selected';}?> value="dong">Đồng</option>
-                                        <option  <?php if (isset($post['rank']) && $post['rank'] == 'bac') {echo 'selected';}?> value="bac">Bạc</option>
-                                        <option  <?php if (isset($post['rank']) && $post['rank'] == 'vang') {echo 'selected';}?> value="vang">Vàng</option>
-                                        <option  <?php if (isset($post['rank']) && $post['rank'] == 'bach-kim') {echo 'selected';}?> value="bach-kim">Bạch Kim</option>
-                                        <option  <?php if (isset($post['rank']) && $post['rank'] == 'kim-cuong') {echo 'selected';}?> value="kim-cuong">Cao Thủ</option>
+                                        <option  <?php if (isset($post['rank']) && $post['rank'] == '1') {echo 'selected';}?> value="1">Đồng</option>
+                                        <option  <?php if (isset($post['rank']) && $post['rank'] == '2') {echo 'selected';}?> value="2">Bạc</option>
+                                        <option  <?php if (isset($post['rank']) && $post['rank'] == '3') {echo 'selected';}?> value="3">Vàng</option>
+                                        <option  <?php if (isset($post['rank']) && $post['rank'] == '4') {echo 'selected';}?> value="4">Bạch Kim</option>
+                                        <option  <?php if (isset($post['rank']) && $post['rank'] == '5') {echo 'selected';}?> value="5">Kim cương</option>
+                                        <option  <?php if (isset($post['rank']) && $post['rank'] == '6') {echo 'selected';}?> value="6">cao thủ</option>
                                 </select>
                             </div>
                             <div  class="form-group col-md-6">

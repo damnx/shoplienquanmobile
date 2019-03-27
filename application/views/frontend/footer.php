@@ -30,7 +30,7 @@
 	</div>
 	<!--//footer-->
 	<!--search jQuery-->
-	<script src="js/main.js"></script>
+	<script src="<?=CDN?>/frontend/js/main.js"></script>
 	<!--//search jQuery-->
 	<!--smooth-scrolling-of-move-up-->
 	<script type="text/javascript">
@@ -51,7 +51,7 @@
 	<!--Bootstrap core JavaScript
     ================================================== -->
 	<!--Placed at the end of the document so the pages load faster -->
-	<script src="js/bootstrap.js"></script>
+	<script src="<?=CDN?>/frontend/js/bootstrap.js"></script>
 </body>
 
 </html>

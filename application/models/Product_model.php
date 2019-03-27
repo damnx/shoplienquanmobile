@@ -150,7 +150,7 @@ class Product_model extends CI_Model {
     }
     public function product($array = array(),$start = 0 ,$limit = 50000)
     {
-        $this->db->select('product.id,product.id_use,product.name,product.alias,product.type,product.thumb,product.price,product.fake_price,product.quantity,product.link_dowload,product.password,product.describe,product.content,product.practical_photo,product.status,product.feature,product.rating,product.published,product.created,product.updates,product.deleted,relationships.candidate_table,relationships.candidate_key,relationships.foreign_table,relationships.foreign_key');
+        $this->db->select('product.rank,product.vang,product.tuong,product.ngoc,product.trang_phuc,product.id,product.id_use,product.name,product.alias,product.type,product.thumb,product.price,product.fake_price,product.quantity,product.link_dowload,product.password,product.describe,product.content,product.practical_photo,product.status,product.feature,product.rating,product.published,product.created,product.updates,product.deleted,relationships.candidate_table,relationships.candidate_key,relationships.foreign_table,relationships.foreign_key');
         $this->db->from('product');
         $this->db->join('relationships', 'product.id = relationships.candidate_key');
         if (isset($array['where']) && count($array['where'])>0)
@@ -165,10 +165,10 @@ class Product_model extends CI_Model {
         {
             $this->db->order_by($array['order_by_desc'], 'DESC');
         }
-        if (isset($array['order_by_asc']) && $array['order_by_asc'] !='')
-        {
-            $this->db->order_by($array['order_by_desc'], 'DESC');
-        }
+        // if (isset($array['order_by_asc']) && $array['order_by_asc'] !='')
+        // {
+        //     $this->db->order_by($array['order_by_desc'], 'DESC');
+        // }
         if (isset($array['like']) && count($array['like']) >0)
         {
             $this->db->like($array['like']);
@@ -190,7 +190,7 @@ class Product_model extends CI_Model {
         {
             $this->db->like($array['like']);
         }
-        $this->db->limit(50000,0);
+        // $this->db->limit(50000,0);
         $query = $this->db->get()->num_rows();
         return $query;
     }

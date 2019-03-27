@@ -33,15 +33,54 @@ class Products extends MY_Controller
                         $page = $_GET['page'];
                     }
 
-                    if (isset($_GET['checkbox'])) {
-                        $data['checkbox'] = $_GET['checkbox'];
-
-                        $current_url = base_url() . ltrim($_SERVER['REQUEST_URI'], '/');
-                        $total_rows = $this->product_model->count_filter($data['checkbox'], count($data['checkbox']), $category['id']);
-                    } else {
-                        $current_url = base_url(uri_string());
-                        $total_rows = $this->product_model->count_product($arr);
+                    if (isset($_GET['rank'])) {
+                        $arr['like'] = array('rank' => $_GET['rank']);
                     }
+
+                    if (isset($_GET['gia'])) {
+                        if($_GET['gia'] =='1'){
+                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1,'product.price <=' => 100000);
+                        }
+
+                        if($_GET['gia'] =='2'){
+                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1,'product.price <=' => 200000,'product.price >=' => 100000);
+                        }
+
+                        if($_GET['gia'] =='3'){
+                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1,'product.price <=' => 300000,'product.price >=' => 200000);
+                        }
+
+                        if($_GET['gia'] =='4'){
+                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1,'product.price <=' => 400000,'product.price >=' => 300000);
+                        }
+
+                        if($_GET['gia'] =='6'){
+                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1,'product.price >=' => 500000);
+                        }
+                    }
+
+                    if(isset($_GET['orderBy'])){
+                        if($_GET['orderBy'] =='tuong'){
+                            $arr['order_by_desc']='tuong';
+                        }
+                    }
+
+                    if(isset($_GET['orderBy'])){
+                        if($_GET['orderBy'] =='trang_phuc'){
+                            $arr['order_by_desc']='trang_phuc';
+                        }
+                    }
+
+                    if(isset($_GET['orderBy'])){
+                        if($_GET['orderBy'] =='rank'){
+                            $arr['order_by_desc']='rank';
+                        }
+                    }
+                    
+
+                    $current_url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                    $total_rows = $this->product_model->count_product($arr);
+                   
 
                     $per_page = 12;
                     $total_page = ceil($total_rows / $per_page);
@@ -50,11 +89,7 @@ class Products extends MY_Controller
                     $page = $page - 1;
                     $data['pagination'] = $this->my_libraies_pagination->pagination($current_url, $total_rows, $per_page);
 
-                    if (isset($_GET['checkbox'])) {
-                        $data['products'] = $this->product_model->filter($data['checkbox'], count($data['checkbox']), $category['id'], $page * $per_page, $per_page);
-                    } else {
-                        $data['products'] = $this->product_model->product($arr, $page * $per_page, $per_page);
-                    }
+                    $data['products'] = $this->product_model->product($arr, $page * $per_page, $per_page);
 
                     $data['attributes'] = $this->attribute_model->attributes($menu['id_category']);
                     if (is_array($data['attributes']) && count($data['attributes']) > 0) {
