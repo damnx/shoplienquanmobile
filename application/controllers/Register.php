@@ -17,11 +17,7 @@ class Register extends MY_Controller {
         $post = $this->input ->post();
         if (isset($post) && count($post)>0)
         {
-            $captcha_answer = $this->input->post('g-recaptcha-response');
-            $response = $this->recaptcha->verifyResponse($captcha_answer);
-            if ($response['success'])
-            {
-                $this->form_validation->set_rules('username', 'Tài khoản', 'trim|required|min_length[6]|max_length[36]|is_unique[use.username]');
+            $this->form_validation->set_rules('username', 'Tài khoản', 'trim|required|min_length[6]|max_length[36]|is_unique[use.username]');
                 $this->form_validation->set_rules('password', 'Mật khẩu', 'trim|required|min_length[8]');
                 $this->form_validation->set_rules('passconf', 'Nhập lại mật khẩu', 'trim|required|matches[password]');
                 $this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email|is_unique[use.email]');
@@ -61,11 +57,6 @@ class Register extends MY_Controller {
                         show_404();
                     }
                 }
-            }
-            else
-                {
-                    $data['return'] = array('title'=>'error','text'=>'Bạn chọn captcha');
-            }
 
         }
         $data['setting'] = $this->setting;

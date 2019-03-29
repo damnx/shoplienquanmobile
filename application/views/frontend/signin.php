@@ -15,7 +15,7 @@
     </div>
     <div class="widget-shadow">
         <div class="login-top wow fadeInUp animated" data-wow-delay=".7s">
-            <h4>Chào mừng bạn đến Linh Chi's ! <br>Không phải là thành viên? <a href="/dang-ky.html"> Đăng ký ngay bây giờ »</a> </h4>
+            <h4>Chào mừng bạn ! <br>Không phải là thành viên? <a href="/dang-ky.html"> Đăng ký ngay bây giờ »</a> </h4>
         </div>
         <div class="login-body wow fadeInUp animated" data-wow-delay=".7s">
             <?php
@@ -36,7 +36,7 @@
                 <input type="password" name="password" class="lock" value="<?=set_value('password')?>"  placeholder="Mật khẩu">
                 <?php echo form_error('password', '<label class="error">', '</label>'); ?>
                <div class="recaptcha-gb" style="">
-                   <?php echo $this->recaptcha->render(); ?>
+                   
                </div>
                 <input type="submit" class="dang-nhap" name="signin" value="Đăng nhập">
                 <div class="forgot-grid">
@@ -48,10 +48,10 @@
             </form>
         </div>
     </div>
-    <div class="login-page-bottom">
+    <!-- <div class="login-page-bottom">
         <h5> - OR -</h5>
         <div class="social-btn"><a href="#"><i>Đăng nhập Facebook</i></a></div>
         <div style="background: #db4437" class="social-btn sb-two"><a href="#"><i>Đăng nhập Google</i></a></div>
-    </div>
+    </div> -->
 </div>
 <!--//login-->

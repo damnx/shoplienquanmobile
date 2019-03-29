@@ -1,178 +1,259 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Cardloaded extends MY_Controller {
-    function __construct()
+class Cardloaded extends MY_Controller
+{
+    private $API_KEY = 'f16771b60689b910e34fed6fe4c9dd5c'; //Api Key của tài khoản quý khách trên hệ thống TRUMTHE247.COM
+    private $API_SECRET = 'c1f6b8920b479f8dcf4248be903f8fea'; //Api Serect của tài khoản quý khách trên hệ thống TRUMTHE247.COM
+    private $URL_CHARGE_API = 'https://trumthe247.com/restapi/charge'; //Url post nạp thẻ. Không đổi.
+    private $DEBUG_FILE_LOG = true; // True nếu cần ghi log, false nếu ko cần.
+    private $FILE_LOG_SUCCESS = 'trumthe247_success.txt'; //Tên file logs thành công.
+    private $FILE_LOG_ERROR = 'trumthe247_error.txt'; //Tên file logs thất bại.
+    
+    public function __construct()
     {
         parent::__construct();
         $this->load->library('recaptcha');
     }
+
+    public function callbackTrumthe() {
+        $validate = $this->ValidateCallback();
+	
+        if($validate != false) { //Nếu xác thực callback đúng thì chạy vào đây.
+            $status = $validate['status']; //Trạng thái thẻ nạp, thẻ thành công = 1, thẻ thất bại != 1, xem bảng mã lỗi.
+            $desc = $validate['desc']; //Mô tả chi tiết lỗi.
+            $serial = $validate['card_data']['serial']; //Số serial của thẻ.
+            $pin = $validate['card_data']['pin']; //Mã pin của thẻ.
+            $card_type = $validate['card_data']['card_type']; //Loại thẻ. vd: VTT, VMS, VNP.
+            $amount = $validate['card_data']['amount']; //Mệnh giá của thẻ.
+            $content = $validate['content']; //Nội dung quý khách đã đẩy lên ở phần nạp thẻ.
+            
+            if($status == 1) {
+                $trumthe247->WriteLog('trumthe247_callback_success.txt', json_encode($validate)); //Ghi log để debug.
+            } else {
+                $trumthe247->WriteLog('trumthe247_callback_failed.txt', json_encode($validate)); //Ghi log để debug.
+            }
+        }
+    }
+
     public function index()
     {
-		$data['setting'] = $this->setting;
-        $data['setting']['title'] = 'Nạp thẻ';
-        $data['check_login'] = $this->check_use;
+        // đây là code phần nạp thẻ
+        $data;
+        $checkLogin = $this->check_use;
         $post = $this->input->post();
-        $captcha_answer = $this->input->post('g-recaptcha-response');
-        $response = $this->recaptcha->verifyResponse($captcha_answer);
-		if (isset($data['setting']) && count($data['setting']) > 0)
-		{
-			if ($data['setting']['type'] =='gamebank')
-            {
-                require('GB_API.php');
-                if (!empty($post))
-                {
-                    if ($response['success'])
-                    {
-                        if (isset( $data['check_login']) && count( $data['check_login']) > 0)
-                        {
-                            $arr = array();
-                            $arr['select'] = '*';
-                            $arr['table'] = 'use';
-                            $arr['where'] = array('id' => $data['check_login']['id']);
-                            $check_use = $this->use_model->get($arr);
+        if (!empty($post)) {
+            if (!isset($_POST['card_type']) || !isset($_POST['card_amount']) || !isset($_POST['serial']) || !isset($_POST['pin'])) {
+                $data['status'] =1;
+                $data['mes'] ='Bạn cần nhập đầy đủ thông tin';
+            } else {
+                $type = $_POST['card_type'];
+                $amount = $_POST['card_amount'];
+                $seri = $_POST['serial'];
+                $pin = $_POST['pin'];
 
-                            $merchant_id = 20463; // interger
-                            $api_user = "56c1d4101793f"; // string
-                            $api_password = "2dbb2434076aaa8a75f0810d4778f5b5"; // string
+                if ($type == '' || $amount == '' || $seri == '' || $pin == '') {
+                    $data['status'] =1;
+                    $data['mes'] ='Bạn cần nhập đầy đủ thông tin';
+                } else {
+                    $note = 'noi dung'; //đây là ghi chú gửi lên hệ thống để validate người dùng khi bên mình gửi về, ví dụ là UID của người nạp.
 
-                            // truyen du lieu the
-                            $pin = $post['code']; // string
-                            $seri = $post['seri']; // string
-                            $card_type = $post['type']; // interger
+                    if($amount < 50000)
+                        $type .= '2';
 
-                            $gb_api = new GB_API();
+                    $charge_result = $this->ChargeCard($type, $seri, $pin, $amount, $note); //thực hiện đẩy thẻ lên hệ thống TrumThe247.Com
 
-                            $gb_api->setMerchantId($merchant_id);
-                            $gb_api->setApiUser($api_user);
-                            $gb_api->setApiPassword($api_password);
-                            $gb_api->setPin($pin);
-                            $gb_api->setSeri($seri);
-                            $gb_api->setCardType(intval($card_type));
-                            $gb_api->setNote("username accname"); // ghi chu giao dich ben ban tu sinh
-
-                            $gb_api->cardCharging();
-                            $code = intval($gb_api->getCode());
-                            $info_card = intval($gb_api->getInfoCard());
-
-                            if ($code === 0 && $info_card >= 10000)
-                            {
-                                $arr = array(
-                                    'id_use' =>$check_use['id'],
-                                    'code' =>$post['code'],
-                                    'seri' => $post['seri'],
-                                    'denominations' => $info_card,
-                                    'type' => $post['type'],
-                                    'before' => $check_use['money'],
-                                    'after' => (int)$check_use['money'] + $info_card,
-                                    'published' =>time()
-                                );
-                                $this->card_model->insert($arr,'card_loaded');
-
-                                $arr = array(
-                                    'money' => (int)$check_use['money'] + $info_card
-                                );
-                                $where = array('id' => $check_use['id']);
-                                $this->use_model->update($arr,$where,'use');
-                                $data['return']  = array('title'=>'success','text'=>'Success ! Nạp thẻ thành công '.number_format($info_card).' !');
-                            }
-                            else
-                            {
-                                $error = $gb_api->getMsg();
-                                $data['return']  = array('title'=>'error','text'=>'error ! '.$error.' !');
-                            }
-                        }
-                        else
-                        {
-                            $data['return'] = array('title'=>'error','text'=>'Bạn cần đăng nhập <a href="/dang-nhap.html" type="Đăng nhập">Đăng Nhập</a>');
-                        }
+                    if ($charge_result == false) { //Có lỗi trong quá trình đẩy thẻ.
+                        $data['status'] =1;
+                        $data['mes'] ='Có lỗi trong quá trình xử lý, xin thử lại hoặc liên hệ Admin';
+                    } else if (is_string($charge_result)) { //Có lỗi trả về của hệ thống TRUMTHE247.COM.
+                        $data['status'] =1;
+                        $data['mes'] =$charge_result;
+                    } else if (is_object($charge_result)) { //Gửi thẻ thành công lên hệ thống.
+                        $data['status'] =0;
+                        $data['mes'] ='Gửi thẻ thành công!';
                     } else {
-                        $data['return'] = array('title'=>'error','text'=>'Bạn chọn captcha');
+                        $data['status'] =1;
+                        $data['mes'] ='Có lỗi trong quá trình xử lý';
                     }
-
                 }
-                $this->load->view('frontend/header',isset($data) ? $data : Null);
-                $this->load->view('frontend/cardloaded',isset($data) ? $data : Null);
-                $this->load->view('frontend/footer',isset($data) ? $data : Null);
+            }
+            var_dump($data);
+            die();
+        }
 
-			}
-			else
+        $this->load->view('frontend/header', isset($data) ? $data : null);
+        $this->load->view('frontend/cardloaded', isset($data) ? $data : null);
+        $this->load->view('frontend/footer', isset($data) ? $data : null);
+    }
+
+    private function ValidateCallback()
+    { //Hàm kiểm tra callback từ trumthe247.com
+        if (isset(
+            $_POST['api_key'],
+            $_POST['api_secret'],
+            $_POST['status'],
+            $_POST['desc'],
+            $_POST['card_data']['serial'],
+            $_POST['card_data']['pin'],
+            $_POST['card_data']['card_type'],
+            $_POST['card_data']['amount'],
+            $_POST['card_data']['real_amount'],
+            $_POST['card_data']['charge_time']
+        )) {
+            if ($_POST['api_key'] == $this->API_KEY && $_POST['api_secret'] == $this->API_SECRET) { //Xác thực API, tránh kẻ lạ gửi dữ liệu ảo.
+                return $_POST; //xác thực thành công, return mảng dữ liệu từ TRUMTHE247.COM trả về.
+            }
+        }
+
+        return false; //Xác thực callback thất bại.
+    }
+
+    private function ChargeCard($telco, $serial, $pin, $amount, $note)
+    { //Hàm gửi dữ liệu thẻ lên hệ thống trumthe247.com
+        /*
+        $telco: nhà mạng. Vd: VTT, VMS, VNP.
+        $serial: số seri của thẻ.
+        $pin: mã thẻ.
+        $amount: mệnh giá thẻ.
+        $note: ghi chú. Quý khách có thể thêm giá trị để xác thực giao dịch cho khách hàng của quý khách. Ví dụ: User ID khách hàng của quý khách, Mã GD, ...
+         */
+        $validate = $this->ValidateCard($telco, $serial, $pin); //Xác thực định dạng thẻ.
+        if ($validate != true) {
+            if ($this->DEBUG_FILE_LOG == true) //Kiểm tra nếu Debug ghi file log = true thì thực hiện ghi dữ liệu đẩy thẻ vào file log.
             {
-                if (!empty($post))
-                {
-                    $this->form_validation->set_rules('code', 'Mã thẻ', 'trim|required');
-                    $this->form_validation->set_rules('seri', 'Seri', 'trim|required');
-                    {
-                        if ($this->form_validation->run() == true)
-                        {
-                            if ($post['type'] == '0')
-                            {
-                                $data['return'] = array('title'=>'error','text'=>'Chọn thẻ nạp');
-                            }
-                            else
-                            {
-                                if (isset( $data['check_login']) && count( $data['check_login']) > 0)
-                                {
-                                    $config = array(
-                                        'URLPAYMENT' => 'http://megapay.com.vn:8080/megapay_server?',
-                                        'PROCESSING_CODE' => '10002',
-                                        'PROJECT_ID' => '82672',
-                                        'USER_NAME' => 'muaxuan.290391@gmail.com',
-                                        'ACCOUNT' => 'phuongvd',
-                                        'PAYMENT_CHANNEL' => '1'
-                                    );
-                                    $project_id = $config['PROJECT_ID'];
-                                    $trans_id = $project_id . date("YmdHis") . rand(1, 99999);
-                                    $payment_data = array(
-                                        'serial' => $post['seri'],
-                                        'mpin' => $post['code'],
-                                        'transid' => $trans_id,
-                                        'telcocode' => $post['type'],
-                                        'username' => $config['USER_NAME'],
-                                        'account' => $config['ACCOUNT'],
-                                        'payment_channel' => $config['PAYMENT_CHANNEL']
-                                    );
-                                    $send_payment_info = array(
-                                        'processing_code' => $config['PROCESSING_CODE'],
-                                        'project_id' =>$config['PROJECT_ID'],
-                                        'data' => json_encode($payment_data)
-                                    );
-                                    $url = $config['URLPAYMENT'];
-                                    $url = $url . urlencode('request=' . json_encode($send_payment_info));
-                                    $response = $this->my_libraies_string->get_curl($url);
-                                    if($response)
-                                    {
-                                        $input = iconv('UTF-8', 'UTF-8//IGNORE', utf8_encode($response));
-                                        $json = json_decode($input, true);
-                                        $status = $json['status'];
-                                        if($status)
-                                        {
-                                            print_r($json);
-                                        }
-                                        else
-                                            {
-                                            echo 'Tham số truyền về không đúng định dạng. Mời bạn liên hệ với nhà cung cấp dịch vụ để biết thêm chi tiết'; die;
-                                        }
-                                    }
-                                    else{
-                                        echo 'Gạch thẻ không thành công. Mời bạn kiểm tra lại đường truyền và bật các extendsion cần thiết.'; die;
-                                    }
-                                }
-                                else
-                                {
-                                    $data['return'] = array('title'=>'error','text'=>'Bạn cần đăng nhập <a href="/dang-nhap.html" type="Đăng nhập">Đăng Nhập</a>');
-                                }
-                            }
-                        }
-                    }
-
-                }
-                $this->load->view('frontend/header',isset($data) ? $data : Null);
-                $this->load->view('frontend/megapay',isset($data) ? $data : Null);
-                $this->load->view('frontend/footer',isset($data) ? $data : Null);
+                $this->WriteLog($this->FILE_LOG_ERROR, $validate);
             }
 
-		}
-       
+            return $validate;
+        }
+
+        $dataPost = array( //Mảng chứa dữ liệu đẩy thẻ lên server TrumThe247.Com
+            'card' => $telco,
+            'amount' => $amount,
+            'serial' => $serial,
+            'pin' => $pin,
+            'api_key' => $this->API_KEY,
+            'api_secret' => $this->API_SECRET,
+            'content' => $note,
+        );
+
+        $charge_response = $this->CurlPost($this->URL_CHARGE_API, $dataPost); //Thực hiện POST cURL dữ liệu lên Server.
+        $response_object = json_decode($charge_response, false); //Parse kết quả đẩy thẻ về dạng đối tượng Object.
+        if (empty($response_object->status)) { //Kiểm tra nếu không tồn tại Response Status, thì là kết quả đẩy thẻ lên Server TrumThe247 bị lỗi. Thực hiện ghi vào file logs, theo dõi file để kiểm tra lỗi.
+            if ($this->DEBUG_FILE_LOG == true) {
+                $this->WriteLog($this->FILE_LOG_ERROR, $charge_response);
+            }
+
+            return false;
+        }
+
+        if ($response_object->status != 1) { //Kiểm tra nếu Response Status khác 1, tức là thẻ đẩy lên bị sai hoặc cấu hình dữ liệu sai, theo dõi mô tả lỗi hoặc so sánh Status Code trong bảng mã lỗi ở file Document hướng dẫn.
+            if ($this->DEBUG_FILE_LOG == true) //Kiểm tra nếu Debug ghi file log = true thì thực hiện ghi dữ liệu đẩy thẻ vào file log.
+            {
+                $this->WriteLog($this->FILE_LOG_ERROR, $charge_response);
+            }
+
+            return $response_object->desc;
+        }
+
+        if ($this->DEBUG_FILE_LOG == true) //Kiểm tra nếu Debug ghi file log = true thì thực hiện ghi dữ liệu đẩy thẻ vào file log.
+        {
+            $this->WriteLog($this->FILE_LOG_SUCCESS, $charge_response);
+        }
+        //Ghi kết quả đẩy thẻ thành công vào file log thành công.
+
+        return $response_object; //Trả về kết đối tượng Object.
     }
+
+    private function ValidateCard($telco, $serial, $pin)
+    { //Hàm kiểm tra định dạng thẻ.
+        $s_length = strlen($serial);
+        $p_length = strlen($pin);
+
+        if ($telco == 'VTT' || $telco == 'VTT2') {
+            if ($s_length != 11 && $s_length != 14) {
+                return 'Số serial thẻ không đúng.';
+            }
+
+            if ($p_length != 13 && $p_length != 15) {
+                return 'Mã thẻ không đúng.';
+            }
+
+        }
+
+        if ($telco == 'VMS' || $telco == 'VMS2') {
+            if ($s_length != 15) {
+                return 'Số serial thẻ không đúng.';
+            }
+
+            if ($p_length != 12) {
+                return 'Mã thẻ không đúng.';
+            }
+
+        }
+
+        if ($telco == 'VNP' || $telco == 'VNP2') {
+            if ($s_length != 14) {
+                return 'Số serial thẻ không đúng.';
+            }
+
+            if ($p_length != 14) {
+                return 'Mã thẻ không đúng.';
+            }
+
+        }
+
+        return true;
+    }
+
+    private function CurlPost($url, $dataPost)
+    { //Hàm cURL POST dữ liệu.
+        if (!is_array($dataPost)) {
+            return false;
+        }
+
+        $dataPost = http_build_query($dataPost);
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $dataPost);
+        $ref = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; //Nếu kết quả cURL bị lỗi xác thực tên miền, thử thay thế $ref = tên miền của bạn. Ví dụ: $ref = 'https://trumthe247.com';
+        curl_setopt($ch, CURLOPT_REFERER, $ref);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+
+        $result = curl_exec($ch);
+
+        if (curl_error($ch)) {
+            $error_msg = curl_error($ch);
+        }
+
+        curl_close($ch);
+
+        if (isset($error_msg)) {
+            return $error_msg;
+        }
+
+        return $result;
+    }
+
+    private function WriteLog($file_name, $content)
+    { //Hàm xử lý việc ghi file log.
+        if (empty($file_name)) {
+            return false;
+        }
+
+        $fp = fopen($file_name, 'a');
+        if (fwrite($fp, date('H:i:s d/m/Y', time()) . ' - ' . $content . PHP_EOL) == false) {
+            return false;
+        }
+
+        fclose($fp);
+
+        return true;
+    }
+
 }

@@ -109,6 +109,7 @@ $route['manager/ajax-pratt/(:any)'] = 'manager/pratt/ajax/$1';
 
 
 $route['manager/card\.html'] = 'manager/card';
+
 $route['manager/ajax-card/(:any)'] = 'manager/card/ajax/$1';
 
 $route['manager/orders\.html'] = 'manager/orders';
@@ -117,7 +118,13 @@ $route['manager/settings\.html'] = 'manager/settings/index';
 
 $route['ajax/(:any)'] = "ajax/$1";
 
+
+$route['403\.html'] = "manager/eroorxx/error403";
+
+
+
 $route['nap-the.html'] = 'cardloaded/index/$1';
+$route['mua-nick.html'] = 'purchase/index/$1';
 #$route['tin-tuc.html'] = 'posts/index/$1';
 $route['tai-khoan\.html'] = 'account/index';
 $route['tai-khoan/doi-mat-khau\.html'] = 'account/change_pass';
@@ -129,6 +136,8 @@ $route['dang-xuat\.html'] = 'logout/index/$1';
 $route['cart\.html'] = 'cart/index/$1';
 $route['(:any)\.html'] = 'products/index/$1';
 $route['sp/(:any)\.html'] = 'single/index/$1';
+
+
 
 
 

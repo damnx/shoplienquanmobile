@@ -44,14 +44,14 @@ class Cart extends MY_Controller {
                                     $where = array('id'=> $check['id']);
                                     $this->product_model->update($arr,$where,'product');
                                 }
-
                             }
-
                         }
                         $money = (int)$data['check_login']['money'] - (int)$this->cart->total();
+                        
                         $arr =  array(
                             'money' =>$money
                         );
+
                         $where = array('id'=> $data['check_login']['id']);
                         $this->card_model->update($arr,$where,'use');
                         $data['return']  = array('title'=>'success','text'=>'Success ! Thanh toán thành công , Cảm ơn bạn !');

@@ -13,6 +13,13 @@ class Posts extends MY_Controller
     {
 
         $data['check_login'] = $this->check_use_admin_login;
+        $permission = array_combine ((explode(',', $data['check_login']['permission'])),(explode(',', $data['check_login']['permission'])));
+        $isAdmin = $data['check_login']['is_admin'];
+        if(array_search('POST_NEW', $permission ) == false && $isAdmin == '0'){
+            $this->my_libraies_redirect->php_redirect('403.html');
+        }
+
+        
         if (!isset($data['check_login']) && count($data['check_login']) <= 0)
         {
             $this->my_libraies_redirect->php_redirect('manager/login.html');
@@ -86,6 +93,11 @@ class Posts extends MY_Controller
     public function iteam($parameter = NULL)
     {
         $data['check_login'] = $this->check_use_admin_login;
+        $isAdmin = $data['check_login']['is_admin'];
+        $permission = array_combine ((explode(',', $data['check_login']['permission'])),(explode(',', $data['check_login']['permission'])));
+        if(array_search('POST_NEW', $permission ) == false && $isAdmin == '0'){
+            $this->my_libraies_redirect->php_redirect('403.html');
+        }
         if (!isset($data['check_login']) && count($data['check_login']) <= 0)
         {
             $this->my_libraies_redirect->php_redirect('manager/login.html');
@@ -371,6 +383,11 @@ class Posts extends MY_Controller
     {
         $json = $echo = false;
         $data['check_login'] = $this->check_use_admin_login;
+        $isAdmin = $data['check_login']['is_admin'];
+        $permission = array_combine ((explode(',', $data['check_login']['permission'])),(explode(',', $data['check_login']['permission'])));
+        if(array_search('POST_NEW', $permission ) == false && $isAdmin == '0'){
+            $this->my_libraies_redirect->php_redirect('403.html');
+        }
         if (!isset($data['check_login']) && count($data['check_login']) <= 0)
         {
             $this->my_libraies_redirect->php_redirect('manager/login.html');

@@ -11,8 +11,13 @@ class Product extends MY_Controller
 
     public function index($parameter = null)
     {
-
+       
         $data['check_login'] = $this->check_use_admin_login;
+        $permission = array_combine ((explode(',', $data['check_login']['permission'])),(explode(',', $data['check_login']['permission'])));
+        $isAdmin = $data['check_login']['is_admin'];
+        if(array_search('POST_NICK', $permission ) == false && $isAdmin == '0'){
+            $this->my_libraies_redirect->php_redirect('403.html');
+        }
         if (!isset($data['check_login']) && count($data['check_login']) <= 0) {
             $this->my_libraies_redirect->php_redirect('manager/login.html');
         }
@@ -71,6 +76,12 @@ class Product extends MY_Controller
     public function iteam($parameter = null)
     {
         $data['check_login'] = $this->check_use_admin_login;
+        $permission = array_combine ((explode(',', $data['check_login']['permission'])),(explode(',', $data['check_login']['permission'])));
+        $isAdmin = $data['check_login']['is_admin'];
+      
+        if(array_search('POST_NICK', $permission ) == false && $isAdmin == '0'){
+            $this->my_libraies_redirect->php_redirect('403.html');
+        }
         if (!isset($data['check_login']) && count($data['check_login']) <= 0) {
             $this->my_libraies_redirect->php_redirect('manager/login.html');
         }
@@ -325,6 +336,12 @@ class Product extends MY_Controller
     {
         $json = $echo = false;
         $data['check_login'] = $this->check_use_admin_login;
+        $permission = array_combine ((explode(',', $data['check_login']['permission'])),(explode(',', $data['check_login']['permission'])));
+        $isAdmin = $data['check_login']['is_admin'];
+      
+        if(array_search('POST_NICK', $permission ) == false && $isAdmin == '0'){
+            $this->my_libraies_redirect->php_redirect('403.html');
+        }
         if (!isset($data['check_login']) && count($data['check_login']) <= 0) {
             $this->my_libraies_redirect->php_redirect('manager/login.html');
             $json = array('status' => false, 'message' => 'Access denied');

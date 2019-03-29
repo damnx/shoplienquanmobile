@@ -11,6 +11,10 @@ class Orders extends MY_Controller
     public function index()
     {
         $data['check_login'] = $this->check_use_admin_login;
+        $isAdmin = $data['check_login']['is_admin'];
+        if($isAdmin == '0'){
+            $this->my_libraies_redirect->php_redirect('403.html');
+        }
         if (!isset($data['check_login']) && count($data['check_login']) <= 0)
         {
             $this->my_libraies_redirect->php_redirect('manager/login.html');
@@ -68,6 +72,10 @@ class Orders extends MY_Controller
     {
         $json = $echo = false;
         $data['check_login'] = $this->check_use_admin_login;
+        $isAdmin = $data['check_login']['is_admin'];
+        if($isAdmin == '0'){
+            $this->my_libraies_redirect->php_redirect('403.html');
+        }
         if (!isset($data['check_login']) && count($data['check_login']) <= 0)
         {
             $this->my_libraies_redirect->php_redirect('manager/login.html');

@@ -28,6 +28,28 @@
 			</div>
 		</div>
 	</div>
+
+		<script type="text/javascript">
+			function muaNick(id) {
+			if (id)
+				{
+					$.post("<?=URL?>/mua-nick.html", {id:id},
+							function(data)
+							{
+								var data = jQuery.parseJSON(data);
+								if(data.status =='1'){
+									$.notify(data.mess);
+								}else{
+									$(location).attr('href', '/tai-khoan.html')
+									$.notify(data.mess);
+								}
+							});
+
+				}
+				}
+
+		</script>
+	
 	<!--//footer-->
 	<!--search jQuery-->
 	<script src="<?=CDN?>/frontend/js/main.js"></script>
@@ -52,6 +74,9 @@
     ================================================== -->
 	<!--Placed at the end of the document so the pages load faster -->
 	<script src="<?=CDN?>/frontend/js/bootstrap.js"></script>
+
+	
+
 </body>
 
 </html>

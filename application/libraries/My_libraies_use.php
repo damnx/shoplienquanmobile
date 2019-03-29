@@ -14,7 +14,7 @@ class My_libraies_use {
         {
             $use_admin = json_decode($_SESSION['use_admin'] ,true);
             $arr = array();
-            $arr['select'] = 'id,username,status,full_name,sex,http_user_agent,deleted';
+            $arr['select'] = 'id,username,status,full_name,sex,http_user_agent,deleted, is_admin,permission';
             $arr['table'] = 'admin';
             $arr['where'] = array('id' =>$use_admin['id']);
             $data = $this->CI->use_model->get($arr);

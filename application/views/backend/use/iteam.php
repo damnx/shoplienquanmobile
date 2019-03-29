@@ -190,6 +190,27 @@
                                                                     <input id="full_name" class="form-control col-md-7 col-xs-12" type="text"  name="full_name">
                                                                 </div>
                                                             </div>
+
+                                                            <div class="form-group">
+                                                                <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Phân quyền <span class="required">*</span></label>
+                                                                <div class="col-md-9 col-sm-9 col-xs-12">
+                                                                    <input id="permission" class="form-control col-md-7 col-xs-12" type="text"  name="permission">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label class="control-label col-md-3 col-sm-3 col-xs-12">Full admin <span class="required">*</span></label>
+                                                                <div style="margin-top: 8px" class="col-md-9 col-sm-9 col-xs-12">
+                                                                    <label>
+                                                                        <input type="radio" value="1" id="is_admin_full" name="is_admin" checked> Quyền admin
+                                                                        &nbsp;
+                                                                        &nbsp;
+                                                                    </label>
+                                                                    <label>
+                                                                        <input type="radio" value="0" id="is_admin" name="is_admin"> Không quyền admin
+                                                                    </label>
+                                                                </div>
+                                                            </div>
                                                             <div class="form-group">
                                                                 <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender <span class="required">*</span></label>
                                                                 <div style="margin-top: 8px" class="col-md-9 col-sm-9 col-xs-12">
@@ -317,6 +338,7 @@
                     $("#username").val(data.username);
 					document.getElementById("username").disabled = true;
                     $("#full_name").val(data.full_name);
+                     $("#permission").val(data.permission);
                     if (data.sex == '1')
                     {
                         $("#sex_M").prop("checked",true );
@@ -335,6 +357,12 @@
                     {
                         $("#status_2").prop("checked",true );
                     }
+
+                    if(data.is_admin=='1'){
+                        $("#is_admin_full").prop("checked",true );
+                    }else{
+                        $("#is_admin").prop("checked",true );
+                    }
                     var timestamp = moment.unix(data.birthday);
                     $("#single_cal3").val(timestamp.format("MM/D/Y"));
                 });
@@ -346,6 +374,7 @@
             $("#full_name").val('');
             $("#sex_M").prop("checked", true);
             $("#single_cal3").val('');
+            $("#is_admin_full").prop("checked",true );
         }
     }
     function remove(id) {

@@ -19,8 +19,7 @@ class Signin extends MY_Controller {
         $post = $this->input->post();
         if (!empty($post))
         {
-            if ($response['success']) {
-                $this->form_validation->set_rules('username', 'Tài khoản', 'trim|required|min_length[6]|max_length[36]|callback_username_check['.trim($this->input->post('password')).']');
+            $this->form_validation->set_rules('username', 'Tài khoản', 'trim|required|min_length[6]|max_length[36]|callback_username_check['.trim($this->input->post('password')).']');
                 $this->form_validation->set_rules('password', 'Mật khẩu', 'trim|required|min_length[8]');
                 if ($this->form_validation->run() == true)
                 {
@@ -39,11 +38,6 @@ class Signin extends MY_Controller {
                     $_SESSION['use'] = json_encode($data['use']);
                     $this->my_libraies_redirect->php_redirect('');
                 }
-            }
-            else
-                {
-                $data['return'] = array('title'=>'error','text'=>'Bạn chọn captcha');
-            }
 
         }
         $data['setting'] = $this->setting;

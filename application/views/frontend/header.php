@@ -23,8 +23,10 @@
 	<!--Custom Theme files -->
 	<link href="<?=CDN?>/frontend/css/bootstrap.css?vs=<?=time()?>" rel="stylesheet" type="text/css" media="all" />
 	<link href="<?=CDN?>/frontend/css/style.css?vs=<?=time()?>" rel="stylesheet" type="text/css" media="all" />
-	<link rel="stylesheet" href="<?=CDN?>/frontend/css/flexslider.css?vs=<?=time()?>" type="text/css" media="screen" />
+	<!-- <link rel="stylesheet" href="<?=CDN?>/frontend/css/flexslider.css?vs=<?=time()?>" type="text/css" media="screen" /> -->
 	<!--//Custom Theme files -->
+	
+	
 	<!--js-->
 	<script src="<?=CDN?>/frontend/js/jquery-1.11.1.min.js?vs=<?=time()?>"></script>
 	<script src="<?=CDN?>/frontend/js/modernizr.custom.js?vs=<?=time()?>"></script>
@@ -34,6 +36,8 @@
 	<!--cart-->
 	<!--web-fonts-->
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+	<script src="<?=CDN?>/frontend/js/notify.js?vs=<?=time()?>"></script>
 
 	<!-- <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic'
 	 rel='stylesheet' type='text/css'> -->
@@ -68,17 +72,28 @@
 			<!--header-one-->
 			<div class="container">
 				<div class="nav navbar-nav wow fadeInLeft animated" data-wow-delay=".5s">
-					<p>Welcome to ShopLienQuanMobile <a href="register.html">Đang ký </a> Or <a href="signin.html">Đang nhập </a></p>
+					<?php 
+						 if (isset($check_login) && count($check_login) > 0){
+							 ?>
+							 	<p><span class="welcome">Welcome <?=$check_login['full_name']?> đến với ShopLienQuanMobile </span><a href="/tai-khoan.html">Quản lý tài khoản</a> | <a href="/dang-xuat.html">Thoát tài khoản</a></p>
+							 <?php
+						 }else{
+							 ?>
+							 	<p>Welcome to ShopLienQuanMobile<a href="/dang-ky.html">Đang ký </a> Or <a href="/dang-nhap.html">Đang nhập </a></p>
+							 <?php
+						 }
+					?>
+					
 				</div>
 				<div class="nav navbar-nav navbar-right social-icons wow fadeInRight animated" data-wow-delay=".5s">
 
 					<ul>
-						<li><a href="#"> </a></li>
-						<li><a href="#" class="pin"> </a></li>
-						<li><a href="#" class="in"> </a></li>
-						<li><a href="#" class="be"> </a></li>
-						<li><a href="#" class="you"> </a></li>
-						<li><a href="#" class="vimeo"> </a></li>
+						<li ><a target="_blank" href="<?=isset($setting['link_facebook'])? $setting['link_facebook']:'#'?>"> </a></li>
+						<li ><a target="_blank" href="#" class="pin"> </a></li>
+						<li ><a target="_blank" href="#" class="in"> </a></li>
+						<li ><a target="_blank" href="#" class="be"> </a></li>
+						<li ><a target="_blank" href="#" class="you"> </a></li>
+						<li ><a target="_blank" href="#" class="vimeo"> </a></li>
 					</ul>
 				</div>
 				<div class="clearfix"> </div>
@@ -89,16 +104,16 @@
 			<div class="container">
 				<div class="nav navbar-nav header-two-left">
 					<ul>
-						<li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>+1234 567 892</li>
-						<li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="mailto:info@example.com">mail@example.com</a></li>
+						<li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i><a href="mailto:info@example.com"><?=isset($setting['phome'])? $setting['phome']:''?></li>
+						<li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="mailto:info@example.com"><?=isset($setting['eamil'])? $setting['eamil']:''?></a></li>
 					</ul>
 				</div>
 				<div class="nav navbar-nav logo wow zoomIn animated" data-wow-delay=".7s">
-					<h1><a href="index.html">Liên Quân Mobile <b>Shoppe</b><span class="tag">Mọi thứ Liên Quân Mobile </span> </a></h1>
+					<h1><a href="/">Liên Quân Mobile <b>Shoppe</b><span class="tag">Mọi thứ Liên Quân Mobile </span> </a></h1>
 				</div>
 				<div class="nav navbar-nav navbar-right header-two-right">
 					<div class="header-right my-account">
-						<a href="contact.html"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>Liên Hệ</a>
+						<a target="_blank" href="<?=isset($setting['link_facebook'])? $setting['link_facebook']:'#'?>"><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>Liên Hệ</a>
 					</div>
 					<div class="header-right cart">
 						<!-- <a href="#"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span></a>

@@ -38,49 +38,47 @@ class Products extends MY_Controller
                     }
 
                     if (isset($_GET['gia'])) {
-                        if($_GET['gia'] =='1'){
-                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1,'product.price <=' => 100000);
+                        if ($_GET['gia'] == '1') {
+                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1, 'product.price <=' => 100000);
                         }
 
-                        if($_GET['gia'] =='2'){
-                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1,'product.price <=' => 200000,'product.price >=' => 100000);
+                        if ($_GET['gia'] == '2') {
+                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1, 'product.price <=' => 200000, 'product.price >=' => 100000);
                         }
 
-                        if($_GET['gia'] =='3'){
-                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1,'product.price <=' => 300000,'product.price >=' => 200000);
+                        if ($_GET['gia'] == '3') {
+                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1, 'product.price <=' => 300000, 'product.price >=' => 200000);
                         }
 
-                        if($_GET['gia'] =='4'){
-                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1,'product.price <=' => 400000,'product.price >=' => 300000);
+                        if ($_GET['gia'] == '4') {
+                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1, 'product.price <=' => 400000, 'product.price >=' => 300000);
                         }
 
-                        if($_GET['gia'] =='6'){
-                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1,'product.price >=' => 500000);
+                        if ($_GET['gia'] == '6') {
+                            $arr['where'] = array('relationships.candidate_table' => 'product', 'relationships.foreign_table' => 'category', 'relationships.foreign_key' => $menu['id_category'], 'deleted' => null, 'product.status' => 1, 'product.quantity >=' => 1, 'product.price >=' => 500000);
                         }
                     }
 
-                    if(isset($_GET['orderBy'])){
-                        if($_GET['orderBy'] =='tuong'){
-                            $arr['order_by_desc']='tuong';
+                    if (isset($_GET['orderBy'])) {
+                        if ($_GET['orderBy'] == 'tuong') {
+                            $arr['order_by_desc'] = 'tuong';
                         }
                     }
 
-                    if(isset($_GET['orderBy'])){
-                        if($_GET['orderBy'] =='trang_phuc'){
-                            $arr['order_by_desc']='trang_phuc';
+                    if (isset($_GET['orderBy'])) {
+                        if ($_GET['orderBy'] == 'trang_phuc') {
+                            $arr['order_by_desc'] = 'trang_phuc';
                         }
                     }
 
-                    if(isset($_GET['orderBy'])){
-                        if($_GET['orderBy'] =='rank'){
-                            $arr['order_by_desc']='rank';
+                    if (isset($_GET['orderBy'])) {
+                        if ($_GET['orderBy'] == 'rank') {
+                            $arr['order_by_desc'] = 'rank';
                         }
                     }
-                    
 
                     $current_url = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                     $total_rows = $this->product_model->count_product($arr);
-                   
 
                     $per_page = 12;
                     $total_page = ceil($total_rows / $per_page);
@@ -141,9 +139,16 @@ class Products extends MY_Controller
         }
         $data['check_login'] = $this->check_use;
         if ($menu['product_posts'] == 'product') {
-            $this->load->view('frontend/header', isset($data) ? $data : null);
-            $this->load->view('frontend/products', isset($data) ? $data : null);
-            $this->load->view('frontend/footer', isset($data) ? $data : null);
+            if ($menu['id_category'] == '97') {
+                $this->load->view('frontend/header', isset($data) ? $data : null);
+                $this->load->view('frontend/productsRamdom', isset($data) ? $data : null);
+                $this->load->view('frontend/footer', isset($data) ? $data : null);
+            } else {
+                $this->load->view('frontend/header', isset($data) ? $data : null);
+                $this->load->view('frontend/products', isset($data) ? $data : null);
+                $this->load->view('frontend/footer', isset($data) ? $data : null);
+            }
+
         } elseif ($menu['product_posts'] == 'posts') {
             $this->load->view('frontend/header', isset($data) ? $data : null);
             $this->load->view('frontend/posts', isset($data) ? $data : null);

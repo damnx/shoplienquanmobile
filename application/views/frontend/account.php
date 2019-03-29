@@ -13,9 +13,9 @@
 <div class="container">
     <div class="container-post">
         <div style="padding:0px 5px" class="col-lg-4 col-sm-4 col-xs-12 widget-sidebar-gb wow fadeInDown animated animated">
-            <div class="well well-sm well-sm-gb ">
+            <div style ='overflow: hidden;' class="well well-sm well-sm-gb ">
                 <div style="" class="col-lg-6 col-sm-6 col-xs-12 hidden-xs">
-                    <img src="<?=CDN?>/frontend/images/use.png" alt="" class="img-rounded img-responsive" />
+                    <img src="statics/frontend/images/users.png" alt="" class="img-rounded img-responsive" />
                 </div>
                 <div  style="padding: 0px 5px" class="col-lg-6 col-sm-6 col-xs-12">
                     <h4 style="color: #ff0000; text-transform: uppercase;padding-bottom: 10px"><?=isset($use['full_name'])?$use['full_name']:'GB'?></h4>
@@ -47,7 +47,7 @@
                             <th>#</th>
                             <th>Tên Sản Phẩm</th>
                             <th>Giá</th>
-                            <th>Link Download / Tài Khoản</th>
+                            <th>Tài Khoản</th>
                             <th>Mật Khẩu</th>
                             <th>Thời Gian</th>
                         </tr>

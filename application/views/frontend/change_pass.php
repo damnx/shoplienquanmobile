@@ -34,7 +34,7 @@ if ($use['email'])
         <div style="padding:0px 5px;" class="col-lg-4 col-sm-4 col-xs-12 widget-sidebar-gb wow fadeInDown animated animated">
             <div class="well well-sm well-sm-gb " style="min-height: 329.5px;">
                 <div style="" class="col-lg-6 col-sm-6 col-xs-12 hidden-xs">
-                    <img src="<?=CDN?>/frontend/images/use.png" alt="" class="img-rounded img-responsive" />
+                    <img src="/statics/frontend/images/users.png" alt="" class="img-rounded img-responsive" />
                 </div>
                 <div  style="padding: 0px 5px" class="col-lg-6 col-sm-6 col-xs-12">
                     <h4 style="color: #ff0000; text-transform: uppercase;padding-bottom: 10px"><?=isset($use['full_name'])?$use['full_name']:'GB'?></h4>
@@ -46,7 +46,7 @@ if ($use['email'])
                     </p>
 
                     <p style="padding: 2px 0px">
-                        <i style="color: #ff0000" class="glyphicon glyphicon-heart"></i> <?=isset($use['money'])?number_format($use['money']).' VND':'GB'?>
+                        <i style="color: #ff0000" class="glyphicon glyphicon-heart"></i> <?=isset($use['money'])?number_format((int)$use['money']).' VND':'GB'?>
                     </p>
                     <p style="padding: 2px 0px">
                         <i class="glyphicon glyphicon-user"></i><a href="/tai-khoan/doi-mat-khau.html"> Thay đổi Mật khẩu</a>
@@ -89,7 +89,7 @@ if ($use['email'])
                                    <?php echo form_error('passconf', '<label class="error">', '</label>'); ?>
                                </div>
                                <div class="recaptcha-gb" style="">
-                                   <?php echo $this->recaptcha->render(); ?>
+                                 
                                </div>
                                <div class="form-group">
                                    <input type="submit" value="Đổi mât khẩu" class="btn btn-info btn-block">
@@ -105,5 +105,4 @@ if ($use['email'])
     </div>
 
 </div>
-</script>
 <!--//new-->

@@ -1,3 +1,4 @@
+
 <div class="gallery">
 		<div class="container">
 			<div class="title-info wow fadeInUp animated" data-wow-delay=".5s">
@@ -9,9 +10,9 @@
 				foreach($ramdomProducts as $key=>$ramdomProduct){
 					?>
 							<div class="col-md-3 gallery-grid wow flipInY animated" data-wow-delay=".5s">
-								<a href="products.html"><img style='width: 50%;' src="/statics/frontend/images/qua-tang.gif" class="img-responsive" alt="" /></a>
+								<a href=""><img style='width: 50%;' src="/statics/frontend/images/qua-tang.gif" class="img-responsive" alt="" /></a>
 								<div class="gallery-text simpleCart_shelfItem">
-									<h5><a class="name" href="single.html"><?=$ramdomProduct['name']?></a></h5>
+									<h5><a class="name" href=''><?=$ramdomProduct['name']?></a></h5>
 									<div class="ofr">
 										<p><span class="item_price"><?=number_format($ramdomProduct['price'])?> đ</span></p>
 									</div>
@@ -21,10 +22,10 @@
 									</div>
 									<div class='row'>
 										<div class='col-md-6' style='padding: 5px 15px;'>
-											<button type="button" class="btn btn-secondary">Xem nick</button>
+												<img style='    width: 27%;' class="img-rank2" src="https://shoplienquan.vn/img/qua-cap-1.gif">
 										</div>
 										<div class='col-md-6' style='padding: 5px 15px;'>
-											<button type="button" class="btn btn-danger">Mua ngay</button>
+											<button   onclick="muaNick(<?=$ramdomProduct['id']?>)" class="btn btn-danger">Mua ngay</button>
 										</div>
 									</div>
 								</div>

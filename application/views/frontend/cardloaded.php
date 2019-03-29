@@ -28,19 +28,31 @@
             }
             ?>
             <form method="post" action="">
-                <input type="text" class="user" value="<?=set_value('code')?>" id="code" name="code" placeholder="Mã thẻ" required="">
-                <?php echo form_error('username', '<label class="error">', '</label>'); ?>
-                <input type="text" name="seri" class="lock" value="<?=set_value('seri')?>"  placeholder="Số seri">
-                <?php echo form_error('password', '<label class="error">', '</label>'); ?>
-                <select class="form-control" name="type" id="type">
-                    <option value="0">Chọn Thẻ Nạp</option>
-                    <option value="1">Viettel</option>
-                    <option value="2">Mobiphone</option>
-                    <option value="3">Vinaphone</option>
+                <input type="text" class="user" value="<?=set_value('pin')?>" id="pin" name="pin" placeholder="Mã thẻ" required="">
+                <?php echo form_error('pin', '<label class="error">', '</label>'); ?>
+                <input type="text" name="serial" class="lock" value="<?=set_value('serial')?>"  placeholder="Số seri">
+                <?php echo form_error('serial', '<label class="error">', '</label>'); ?>
+
+                 <select class="form-control" name="card_amount" id="type">
+                    <option value="0">Chọn mệnh giá</option>
+                    <option value="10000">10.000</option>
+                    <option value="20000">20.000</option>
+                    <option value="30000">30.000</option>
+                    <option value="50000">50.000</option>
+                    <option value="100000">100.000</option>
+                    <option value="200000">200.000</option>
+                    <option value="300000">300.000</option>
+                    <option value="500000">500.000</option>
+                    <option value="1000000">1.000.000</option>
                 </select>
-                <div class="recaptcha-gb" style="">
-                    <?php echo $this->recaptcha->render(); ?>
-                </div>
+
+                <select class="form-control" name="card_type" id="type">
+                    <option value="">Chọn Thẻ Nạp</option>
+                    <option value="VTT">Viettel</option>
+                    <option value="VMS">Mobiphone</option>
+                    <option value="VNP">Vinaphone</option>
+                </select>
+                
                 <input type="submit" class="dang-nhap" name="signin" value="Đăng nhập">
                 <div class="forgot-grid">
                     <div class="forgot">

@@ -43,7 +43,6 @@
                 <input type="text" placeholder="Số điện thoại" name="phome" value="<?=set_value('phome')?>" id="phome" >
                 <?php echo form_error('phome', '<label class="error">', '</label>'); ?>
                 <div class="recaptcha-gb" style="">
-                    <?php echo $this->recaptcha->render(); ?>
                 </div>
                 <input type="button" id="registers" onclick="validateForm()" name="register" value="Đăng ký">
             </form>

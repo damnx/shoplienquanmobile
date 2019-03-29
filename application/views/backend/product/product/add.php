@@ -247,12 +247,43 @@ if (isset($categorys) && is_array($categorys)) {
                             </div>
                             <div  class="form-group col-md-3">
                                 <select id='rank' name='rank' class="form-control">
-                                        <option  <?php if (isset($post['rank']) && $post['rank'] == '1') {echo 'selected';}?> value="1">Đồng</option>
-                                        <option  <?php if (isset($post['rank']) && $post['rank'] == '2') {echo 'selected';}?> value="2">Bạc</option>
-                                        <option  <?php if (isset($post['rank']) && $post['rank'] == '3') {echo 'selected';}?> value="3">Vàng</option>
-                                        <option  <?php if (isset($post['rank']) && $post['rank'] == '4') {echo 'selected';}?> value="4">Bạch Kim</option>
-                                        <option  <?php if (isset($post['rank']) && $post['rank'] == '5') {echo 'selected';}?> value="5">Kim cương</option>
-                                        <option  <?php if (isset($post['rank']) && $post['rank'] == '6') {echo 'selected';}?> value="6">cao thủ</option>
+                                    <?php 
+                                        $array =array('dong-i'=>'Đồng I',
+                                        'dong-ii'=>'Đồng II',
+                                        'dong-iii'=>'Đồng III',
+                                        'dong-iv'=>'Đồng IV',
+                                        'dong-v'=>'Đồng V',
+                                        'bac-i'=>'Bạc I',
+                                        'bac-ii'=>'Bạc II',
+                                        'bac-iii'=>'Bạc III',
+                                        'bac-iv'=>'Bạc IV',
+                                        'bac-v'=>'Bạc V',
+                                        'vang-i'=>'Vàng I',
+                                        'vang-ii'=>'Vàng II',
+                                        'vang-iii'=>'Vàng III',
+                                        'vang-iv'=>'Vàng IV',
+                                        'vang-V'=>'Vàng V',
+                                        'bac-kim-i'=>'Bạch Kim I',
+                                        'bac-kim-ii'=>'Bạch Kim II',
+                                        'bac-kim-iii'=>'Bạch Kim III',
+                                        'bac-kim-iv'=>'Bạch Kim IV',
+                                        'bac-kim-v'=>'Bạch Kim V',
+                                        'kim-cuong-i'=>'Kim cương I',
+                                        'kim-cuong-ii'=>'Kim cương II',
+                                        'kim-cuong-iii'=>'Kim cương III',
+                                        'kim-cuong-iv'=>'Kim cương IV',
+                                        'kim-cuong-v'=>'Kim cương V',
+                                        'cao-thu'=>'Cao thủ',
+                                        'thach-dau'=>'Thách đấu',);
+
+                                        foreach($array as $key=>$value){
+                                            ?>
+                                                <option  <?php if (isset($post['rank']) && $post['rank'] == $key) {echo 'selected';}?> value=<?=$key?>><?=$value?></option>
+                                            <?php
+                                         
+                                        }
+
+                                    ?>
                                 </select>
                             </div>
                             <div  class="form-group col-md-6">
@@ -274,15 +305,15 @@ if (isset($categorys) && is_array($categorys)) {
 
 
             <div id="showhied" style="overflow: hidden">
-                <div style=' display: none;' class="row">
+                <div class="row">
                     <div class="col-md-3">
-                        <label>Link dowload / password download</label>
-                        <p>Not required for product quantity management</p>
+                        <label>Tài khoản / mật khẩu</label>
+                     
                     </div>
                     <div class="col-md-9">
                         <div class="x_panel">
                             <div class="x_title">
-                                <h2>Link dowload / password download<small></small></h2>
+                                <h2>Tài khoản / Mật khẩu<small></small></h2>
                                 <ul class="nav navbar-right panel_toolbox">
                                     <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
                                     </li>
@@ -293,10 +324,10 @@ if (isset($categorys) && is_array($categorys)) {
                             </div>
                             <div class="x_content">
                                 <div class="form-group col-md-6">
-                                    <input type="text" id="link_dowload" value="<?=isset($post['link_dowload']) ? $post['link_dowload'] : set_value('link_dowload')?>" name="link_dowload" class="form-control" placeholder="Link dowload ">
+                                    <input type="text" id="link_dowload" value="<?=isset($post['link_dowload']) ? $post['link_dowload'] : set_value('link_dowload')?>" name="link_dowload" class="form-control" placeholder="Tài khoản">
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <input type="text" id="password" name="password" value="<?=isset($post['password']) ? $post['password'] : set_value('password')?>" class="form-control" placeholder="password download">
+                                    <input type="text" id="password" name="password" value="<?=isset($post['password']) ? $post['password'] : set_value('password')?>" class="form-control" placeholder="mật khẩu">
                                 </div>
                             </div>
                         </div>

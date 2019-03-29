@@ -1,266 +1,242 @@
-<!--breadcrumbs-->
-<link href="<?=CDN?>/frontend/css/style.css?vs=<?=time()?>" rel="stylesheet" type="text/css" media="all" />
-<div class="breadcrumbs">
-    <div class="container">
-        <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
-            <li><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
-            <?php
-            if (isset($categorys) && count($categorys) >0)
-            {
-                foreach ($categorys as $category)
-                {
-                    ?>
-                    <li><a href="/<?=$category['alias']?>.html"><?=$category['name']?></a></li>
-                    <?php
-                }
-            }
-            ?>
-            <li class="active"><?=cutOf($product['name'],25,false)?></li>
-        </ol>
-    </div>
-</div>
-<!--//breadcrumbs-->
-<!--single-page-->
-
-<div class="single single-gb">
-    <div class="container">
-        <div class="title_sanpham">
-            <div class="title-feature-new col-lg-9 col-sm-9 col-xs-12">
-                <h2><?=$product['name']?></h2>
-            </div>
-            <div style="padding: 0px 2px"class="col-lg-3 col-sm-3 col-xs-12  facebook_like_she">
-                <div class="fb-like" data-href="<?=URL?>/sp/<?=$product['alias']?>.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
-            </div>
-        </div>
-        <div style="padding: 0px 2px" class="col-lg-9 col-sm-9 col-xs-12  ">
-            <div style="padding: 0px" class="col-lg-7 col-sm-7 col-xs-12">
-                <div class="product-img">
-                    <div class="product-img__main">
-                        <a href="">
-                            <img src="<?=$product['thumb']?>" alt="">
-                        </a>
-                    </div>
-                    <div class="product-img__thumb">
-                        <?php
-                        if (isset($product['practical_photo']) && $product['practical_photo'] !=null)
-                        {
-                            $practical_photo = explode('|', trim($product['practical_photo']));
-                            if (count($practical_photo) <= 4)
-                            {
-                                $count = count($practical_photo);
-                            }
-                            else
-                            {
-                                $count = 4;
-                            }
-                            for ($i = 0; $i < $count; $i++)
-                            {
-                                if ($i<=4)
-                                {
+<!--flex slider-->
+<script defer src="<?=CDN?>/frontend/js/jquery.flexslider.js"></script>
+		<link rel="stylesheet" href="<?=CDN?>/frontend/css/flexslider1.css" type="text/css" media="screen" />
+		<script>
+			// Can also be used with $(document).ready()
+			$(window).load(function() {
+			$('.flexslider').flexslider({
+				animation: "slide",
+				controlNav: "thumbnails"
+			});
+			});
+		</script>
+	<!--flex slider-->
+<?php 
+$arrayPracticalPhoto=array();
+if($product['practical_photo'] ){
+    $arrayPracticalPhoto=explode('|', $product['practical_photo']);
+}
+?>
+<div class="single">
+		<div class="container">
+			<div class="single-info">		
+				<div class="col-md-6 single-top wow fadeInLeft animated" data-wow-delay=".5s">	
+					<div class="flexslider">
+						<ul class="slides">
+                            <?php 
+                                foreach($arrayPracticalPhoto as $key=>$value){
                                     ?>
-                                    <a href="" class="product-img__item">
-                                        <img src="<?=$practical_photo[$i]?>" alt="">
-                                    </a>
+                                        <li data-thumb="<?=$value?>">
+                                            <div class="thumb-image"> <img src="<?=$value?>" data-imagezoom="true" class="img-responsive" alt=""> </div>
+                                        </li>
                                     <?php
                                 }
-                            }
                             ?>
-                            <a href="" class="product-img__item">
-                                <img src="<?=$product['thumb']?>" alt="">
-                                <span class="product-img__cap">Xem <span><?=count($practical_photo)?></span> hình</span>
-                            </a>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-6 single-top-left simpleCart_shelfItem wow fadeInRight animated" data-wow-delay=".5s">
+					<h3><?=$product['name']?></h3>
+					<div class="single-rating">
+						<span class="starRating">
+							<input id="rating5" type="radio" name="rating" value="5" checked>
+							<label for="rating5">5</label>
+							<input id="rating4" type="radio" name="rating" value="4">
+							<label for="rating4">4</label>
+							<input id="rating3" type="radio" name="rating" value="3">
+							<label for="rating3">3</label>
+							<input id="rating2" type="radio" name="rating" value="2">
+							<label for="rating2">2</label>
+							<input id="rating1" type="radio" name="rating" value="1">
+							<label for="rating1">1</label>
+						</span>
+						<!-- <p>5.00 out of 5</p>
+						<a href="#">Add Your Review</a> -->
+					</div>
+                    <div style ='float: left;width: 100%;'>
+                        <?php 
+                            if($product['fake_price']){
+                                ?>
+                                    <h6 class="item_price_"><del><?=number_format($product['price'])?> đ</del></h6>
+                                    <h6 class="item_price"><?=number_format($product['fake_price'])?> đ</h6>
+                                <?php
+                            
+                            }else{
+                            ?>
+                                <h6 class="item_price"><?=number_format($product['price'])?> đ</h6>
                             <?php
-                        }
+                            }
                         ?>
                     </div>
-                </div>
-                <div class="model-fullscr">
-                    <div class="model-fullscr-content">
-                        <div class="main-slider">
-
-                            <?php
-                            if (isset($product['practical_photo']) && $product['practical_photo'] !=null)
-                            {
-                                $practical_photo = explode('|', trim($product['practical_photo']));
-                                for ($i = 0; $i <  count($practical_photo); $i++)
-                                {
-                                    ?>
-                                    <div class="main-slider__item">
-                                        <img src="<?=$practical_photo[$i]?>" alt="">
-                                    </div>
-                                    <?php
-                                }
-                            }
-                            else
-                            {
-                                ?>
-                                <div class="main-slider__item">
-                                    <img src="<?=$product['thumb']?>" alt="">
-                                </div>
-                                <?php
-                            }
-                            ?>
-                        </div>
-
-                        <div class="thumb-img">
-
-                            <?php
-                            if (isset($product['practical_photo']) && $product['practical_photo'] !=null)
-                            {
-                                $practical_photo = explode('|', trim($product['practical_photo']));
-                                for ($i = 0; $i <  count($practical_photo); $i++)
-                                {
-                                    ?>
-                                    <a href="" class="thumb-img__item">
-                                        <img src="<?=$practical_photo[$i]?>" alt="">
-                                    </a>
-                                    <?php
-                                }
-                            }
-                            else
-                            {
-                                ?>
-                                <a href="" class="thumb-img__item">
-                                    <img src="<?=$product['thumb']?>" alt="">
-                                </a>
-                                <?php
-                            }
-                            ?>
-
-                        </div>
-
-                        <div class="count-item">
-                            Hình <span class="item-current">8</span> / <span class="sum-item">9</span>
-                        </div>
-
-                        <a href="javascript:;" class="exit-modal">
-                            <i class="icon-exit"></i>
-                            <span>Đóng</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5 col-sm-5 col-xs-12">
-                <?php
-                if ($product['fake_price'] >= 1)
-                {
-                    ?>
-                        <div class="area_price"><p>Giá </p>: <b><?=number_format($product['price'])?> vnđ</b></div>
-                        <div class="area_price"><i><?=number_format($product['fake_price'])?> vnđ</i></div>
-                    <?php
-                }
-                else
-                {
-                    ?>
-                    <div class="area_price"><p>Giá </p>: <b><?=number_format($product['price'])?> vnđ</b></div>
-                    <?php
-                }
-                ?>
-                <div class="mota-sp">
-                  <?=$product['describe']?>
-                </div>
-                <div class="single-top-left">
-                    <?php
-                    if (isset($attributes) && count($attributes) > 0)
-                    {
-                        foreach ($attributes as $attribute)
-                        {
-                            ?>
-                            <ul class="size">
-                                <h4><?=$attribute['name']?></h4>
-                                <?php
-                                if (isset($attribute['detail_attribute']) && count($attribute['detail_attribute']) > 0)
-                                {
-                                    foreach ($attribute['detail_attribute'] as $detail_attribute)
-                                    {
-                                        echo '<li><a href="javascript:;">'.$detail_attribute['name'].'</a></li>';
-                                    }
-                                }
-                                ?>
-                            </ul>
-                            <?php
-                        }
-                    }
-                    ?>
-                </div>
-                <div class="single-info">
-                    <div class="quantity">
-                        <p class="qty"> Qty :  </p><input min="1" id="qty" name="qty" type="number" value="1" class="item_quantity">
-                    </div>
-                    <div class="btn_form">
-                        <a href="#" onclick="addCart(<?=$product['id']?>)" data-toggle="modal" data-target=".bs-example-modal-lg" class="add-cart item_add">Mua ngay</a>
-                        <a href="/" class="product-howToBuy" target="_blank">
-                            <i class="icn-howtobuy"></i><span class="txt-howtobuy">Hướng dẫn <br> mua hàng</span>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-12 col-sm-12 col-xs-12 container-container-gb single-gb-left">
-                <?=$product['content']?>
-            </div>
-        </div>
-        <div style="padding: 0px" class="col-lg-3 col-sm-3 col-xs-12 single-gb-right">
-            <?php
-            if (isset($categorys) && count($categorys) >0)
-            {
-                $categorys = array_pop($categorys);
-            }
-            ?>
-            <?= $this->load->widget('related_products',array('cid' => $categorys['foreign_key'],'id_pr'=>$product['id'])); ?>
-        </div>
-    </div>
-</div>
-<div class="modal slishow-gb" id="popup" style="display: none;">
-    <span class="colse-gb"  data-dismiss="modal" aria-hidden="true"><i class="glyphicon glyphicon-remove"></i></span>
-    <div class="slider-image-gb">
-        <div class="slider slider-for">
-            <div>
-                <img class="img-responsive img__slishow" src="<?=$product['thumb']?>">
-            </div>
-            <?php
-            if (isset($product['practical_photo']) && $product['practical_photo'] !=null)
-            {
-                $practical_photo = explode('|', trim($product['practical_photo']));
-                for ($i = 0; $i < count($practical_photo); $i++)
-                {
-                    ?>
-                    <div>
-                        <img class="img-responsive img__slishow" src="<?=$practical_photo[$i]?>">
-                    </div>
-                    <?php
-                }
-            }
-            ?>
-
-
-        </div>
-        <ul class="slider slider-nav">
-            <li>
-                <div>
-                    <img  class="img-responsive img-slishow" src="<?=$product['thumb']?>">
-                </div>
-            </li>
-            <?php
-            if (isset($product['practical_photo']) && $product['practical_photo'] !=null)
-            {
-                $practical_photo = explode('|', trim($product['practical_photo']));
-                for ($i = 0; $i < count($practical_photo); $i++)
-                {
-                    ?>
-                    <li>
-                        <div>
-                            <img  class="img-responsive img-slishow" src="<?=$practical_photo[$i]?>">
-                        </div>
-                    </li>
-                    <?php
-                }
-            }
-            ?>
-
-        </ul>
-    </div>
-</div>
-<!---->
-<!--<script type="text/javascript" src="--><?//=CDN?><!--/frontend/js/jquery.min.js"></script>-->
-<script type="text/javascript" src="<?=CDN?>/frontend/js/slick.min.js"></script>
-<script type="text/javascript" src="<?=CDN?>/frontend/js/script.js"></script>
+                    
+						
+					<p><?=$product['describe']?></p>
+					<ul class="size">
+						<h4>Rank </h4>
+						<li><a href="javascript:;"><?=$product['rank']?></a></li>
+						
+					</ul>
+					<ul class="size">
+						<h4>Tướng</h4>
+						<li><a href="javascript:;"><?=$product['tuong']?></a></li>
+					</ul>
+                    <ul class="size">
+						<h4>Vàng</h4>
+						<li><a href="javascript:;"><?=$product['vang']?></a></li>
+					</ul>
+                    <ul class="size">
+						<h4>Trang phục</h4>
+						<li><a href="javascript:;"><?=$product['trang_phuc']?></a></li>
+					</ul>
+                    <ul class="size">
+						<h4>Điểm ngọc</h4>
+						<li><a href="javascript:;"><?=$product['ngoc']?></a></li>
+					</ul>
+					<div class="clearfix"> </div>
+					<div class="quantity">
+						<p class="qty"> Qty :  </p><input min="1" type="number" value="1" class="item_quantity">
+					</div>
+					<div class="btn_form">
+						<a  href="javascript:;" onclick="muaNick(<?=$product['id']?>)" class="add-cart item_add">Mua ngay</a>	
+					</div>
+				</div>
+			   <div class="clearfix"> </div>
+			</div>
+			<!--collapse-tabs-->
+			<div class="collpse tabs">
+				<div class="panel-group collpse" id="accordion" role="tablist" aria-multiselectable="true">
+					<div class="panel panel-default wow fadeInUp animated" data-wow-delay=".5s">
+						<div class="panel-heading" role="tab" id="headingOne">
+							<h4 class="panel-title">
+								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+								  Mô tả sản phẩm
+								</a>
+							</h4>
+						</div>
+						<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+							<div class="panel-body">
+								<?=$product['content']?>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--//collapse -->
+			<!--related-products-->
+			<div class="related-products">
+				<!-- <div class="title-info wow fadeInUp animated" data-wow-delay=".5s">
+					<h3 class="title">Related<span> Products</span></h3>
+					<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit curabitur </p>
+				</div>
+				<div class="related-products-info">
+					<div class="col-md-3 new-grid simpleCart_shelfItem wow flipInY animated" data-wow-delay=".5s">
+						<div class="new-top">
+							<a href="single.html"><img src="images/g9.jpg" class="img-responsive" alt=""/></a>
+							<div class="new-text">
+								<ul>
+									<li><a class="item_add" href=""> Add to cart</a></li>
+									<li><a href="single.html">Quick View </a></li>
+									<li><a href="products.html">Show Details </a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="new-bottom">
+							<h5><a class="name" href="single.html">Baby Red Dress </a></h5>
+							<div class="rating">
+								<span class="on">☆</span>
+								<span class="on">☆</span>
+								<span class="on">☆</span>
+								<span class="on">☆</span>
+								<span>☆</span>
+							</div>	
+							<div class="ofr">
+								<p class="pric1"><del>$2000.00</del></p>
+								<p><span class="item_price">$500</span></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 new-grid new-mdl simpleCart_shelfItem wow flipInY animated" data-wow-delay=".7s">
+						<div class="new-top">
+							<a href="single.html"><img src="images/g10.jpg" class="img-responsive" alt=""/></a>
+							<div class="new-text">
+								<ul>
+									<li><a class="item_add" href=""> Add to cart</a></li>
+									<li><a href="single.html">Quick View </a></li>
+									<li><a href="products.html">Show Details </a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="new-bottom">
+							<h5><a class="name" href="single.html">Crocs Sandals </a></h5>
+							<div class="rating">
+								<span class="on">☆</span>
+								<span class="on">☆</span>
+								<span class="on">☆</span>
+								<span class="on">☆</span>
+								<span>☆</span>
+							</div>	
+							<div class="ofr">
+								<p class="pric1"><del>$2000.00</del></p>
+								<p><span class="item_price">$500</span></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 new-grid new-mdl1 simpleCart_shelfItem wow flipInY animated" data-wow-delay=".9s">
+						<div class="new-top">
+							<a href="single.html"><img src="images/g11.jpg" class="img-responsive" alt=""/></a>
+							<div class="new-text">
+								<ul>
+									<li><a class="item_add" href=""> Add to cart</a></li>
+									<li><a href="single.html">Quick View </a></li>
+									<li><a href="products.html">Show Details </a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="new-bottom">
+							<h5><a class="name" href="single.html">Pink Sip Cup </a></h5>
+							<div class="rating">
+								<span class="on">☆</span>
+								<span class="on">☆</span>
+								<span class="on">☆</span>
+								<span class="on">☆</span>
+								<span>☆</span>
+							</div>	
+							<div class="ofr">
+								<p class="pric1"><del>$2000.00</del></p>
+								<p><span class="item_price">$500</span></p>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 new-grid simpleCart_shelfItem wow flipInY animated" data-wow-delay="1.1s">
+						<div class="new-top">
+							<a href="single.html"><img src="images/g12.jpg" class="img-responsive" alt=""/></a>
+							<div class="new-text">
+								<ul>
+									<li><a class="item_add" href=""> Add to cart</a></li>
+									<li><a href="single.html">Quick View </a></li>
+									<li><a href="products.html">Show Details </a></li>
+								</ul>
+							</div>
+						</div>
+						<div class="new-bottom">
+							<h5><a class="name" href="single.html">Child Print Bike </a></h5>
+							<div class="rating">
+								<span class="on">☆</span>
+								<span class="on">☆</span>
+								<span class="on">☆</span>
+								<span class="on">☆</span>
+								<span>☆</span>
+							</div>	
+							<div class="ofr">
+								<p class="pric1"><del>$2000.00</del></p>
+								<p><span class="item_price">$500</span></p>
+							</div>
+						</div>
+					</div>
+					<div class="clearfix"> </div>
+				</div> -->
+			</div>
+			<!--//related-products-->
+		</div>
+	</div>
+	<!--//single-page-->
