@@ -277,9 +277,8 @@ class Cardloaded extends MY_Controller
         if (!is_array($dataPost)) {
             return false;
         }
-
+        
         $dataPost = http_build_query($dataPost);
-
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);

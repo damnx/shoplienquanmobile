@@ -3,7 +3,7 @@
     <div class="container">
         <ol class="breadcrumb breadcrumb1 animated wow fadeInUp" data-wow-delay=".5s">
             <li><a href="/"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Home</a></li>
-            <li class="active">Đăng nhập</li>
+            <li class="active">Nạp thẻ</li>
         </ol>
     </div>
 </div>
@@ -33,7 +33,7 @@
                 <input type="text" name="serial" class="lock" value="<?=set_value('serial')?>"  placeholder="Số seri">
                 <?php echo form_error('serial', '<label class="error">', '</label>'); ?>
 
-                 <select class="form-control" name="card_amount" id="type">
+                 <select class="form-control card-amount" name="card_amount" id="type">
                     <option value="0">Chọn mệnh giá</option>
                     <option value="10000">10.000</option>
                     <option value="20000">20.000</option>
@@ -46,7 +46,7 @@
                     <option value="1000000">1.000.000</option>
                 </select>
 
-                <select class="form-control" name="card_type" id="type">
+                <select class="form-control card-type" name="card_type" id="type">
                     <option value="">Chọn Thẻ Nạp</option>
                     <option value="VTT">Viettel</option>
                     <option value="VMS">Mobiphone</option>
