@@ -51,7 +51,7 @@ class Cardloaded extends MY_Controller
         $checkLogin = $this->check_use;
         $data['check_login'] = $this->check_use;
         if (!isset($checkLogin) && count($checkLogin) <= 0) {
-            $data['return'] = array('status' => '1', 'data' => '', 'mess' => 'Bạn cần đang nhập trước khi nạp tiền vào tài khoản');
+            $data['return'] = array('status' => '1', 'data' => '', 'mes' => 'Bạn cần đang nhập trước khi nạp tiền vào tài khoản');
         } else {
             $post = $this->input->post();
             if (!empty($post)) {
@@ -284,7 +284,8 @@ class Cardloaded extends MY_Controller
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $dataPost);
-        $ref = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; //Nếu kết quả cURL bị lỗi xác thực tên miền, thử thay thế $ref = tên miền của bạn. Ví dụ: $ref = 'https://trumthe247.com';
+        // $ref = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; //Nếu kết quả cURL bị lỗi xác thực tên miền, thử thay thế $ref = tên miền của bạn. Ví dụ: $ref = 'https://trumthe247.com';
+        $ref ='http://accngon.mobi';
         curl_setopt($ch, CURLOPT_REFERER, $ref);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
