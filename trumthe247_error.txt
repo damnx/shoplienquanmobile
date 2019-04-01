@@ -1,10 +1,2 @@
-11:58:59 29/03/2019 - {"status":-1004,"desc":"Tên miền chưa được xác thực"}
-08:11:20 01/04/2019 - {"status":-1008,"desc":"Seri thẻ không đúng!"}
-08:12:04 01/04/2019 - {"status":-1008,"desc":"Seri thẻ không đúng!"}
-08:13:51 01/04/2019 - {"status":-1008,"desc":"Seri thẻ không đúng!"}
-08:15:05 01/04/2019 - {"status":-1008,"desc":"Seri thẻ không đúng!"}
-08:15:17 01/04/2019 - {"status":-1008,"desc":"Seri thẻ không đúng!"}
-08:21:28 01/04/2019 - {"status":-1008,"desc":"Seri thẻ không đúng!"}
-08:22:54 01/04/2019 - {"status":-1008,"desc":"Seri thẻ không đúng!"}
-08:42:11 01/04/2019 - {"status":-1008,"desc":"Seri thẻ không đúng!"}
-08:45:25 01/04/2019 - {"status":-1008,"desc":"Seri thẻ không đúng!"}
+14:13:51 01/04/2019 - 0
+14:13:56 01/04/2019 - 1

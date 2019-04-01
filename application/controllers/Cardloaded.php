@@ -28,22 +28,20 @@ class Cardloaded extends MY_Controller
             $card_type = $validate['card_data']['card_type']; //Loại thẻ. vd: VTT, VMS, VNP.
             $amount = $validate['card_data']['amount']; //Mệnh giá của thẻ.
             $content = $validate['card_data']['content']; //Nội dung quý khách đã đẩy lên ở phần nạp thẻ.
-
-            if ($status == 1) {
-                // $trumthe247->WriteLog('trumthe247_callback_success.txt', json_encode($validate)); //Ghi log để debug.
+            if ($status == '1') {
                 $arr= array();
                 $post = array('status' => 1, 'message' => $desc);
                 $arr['where'] = array('code' => $pin, 'seri' => $serial,'id_use'=>$content);
-                $data['return'] = $this->card_model->update($post, $arr['where'], 'card_loaded');
-
+                // $this->card_model->update($post, $arr['where'], 'card_loaded');
+                $this->WriteLog('trumthe247_error.txt', json_encode($this->card_model->update($post, $arr['where'], 'card_loaded'))); //Ghi log để debug.
             } else {
-                // $trumthe247->WriteLog('trumthe247_callback_failed.txt', json_encode($validate)); //Ghi log để debug.
+                $this->WriteLog('trumthe247_error.txt', json_encode($validate)); //Ghi log để debug.
                 $arr= array();
-                $post = array('status' => 1, 'message' => $desc);
-                $arr['where'] = array('code' => $pin, 'seri' => $serial,'id_use'=>$content);
-                $data['return'] = $this->card_model->update($post, $arr['where'], 'card_loaded');
+                $post = array('status' =>0, 'message' => $desc);
+                // $arr['where'] = array('code' => $pin, 'seri' => $serial,'id_use'=>$content);
+                $this->WriteLog('trumthe247_error.txt', json_encode($this->card_model->update($post, $arr['where'], 'card_loaded'))); //Ghi log để debug.
             }
-        } 
+        }
     }
 
     public function index()
