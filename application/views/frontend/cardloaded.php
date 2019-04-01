@@ -21,7 +21,7 @@
                 ?>
                 <div style="padding: 0px" class="col-lg-12">
                     <div class="alert alert-warning" role="alert">
-                        <strong>Warning! </strong> <?=$return['text']?>
+                        <strong>Warning! </strong> <?=$return['mes']?>
                     </div>
                 </div>
                 <?php

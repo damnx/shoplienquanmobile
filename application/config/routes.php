@@ -121,6 +121,10 @@ $route['ajax/(:any)'] = "ajax/$1";
 
 $route['403\.html'] = "manager/eroorxx/error403";
 
+$route['callback-trumthe'] = "cardloaded/callbackTrumthe";
+
+
+
 
 
 $route['nap-the.html'] = 'cardloaded/index/$1';
