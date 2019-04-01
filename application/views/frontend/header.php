@@ -79,7 +79,7 @@
 							 <?php
 						 }else{
 							 ?>
-							 	<p>Welcome to ShopLienQuanMobile<a href="/dang-ky.html">Đang ký </a> Or <a href="/dang-nhap.html">Đang nhập </a></p>
+							 	<p>Welcome to ShopLienQuanMobile<a href="/dang-ky.html">Đang ký </a> Or <a href="/dang-nhap.html">Đang nhập </a> Or <a href="/dang-nhanh.html">Đang nhập nhanh </a></p>
 							 <?php
 						 }
 					?>

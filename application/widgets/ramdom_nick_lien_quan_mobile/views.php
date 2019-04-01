@@ -22,7 +22,7 @@
 									</div>
 									<div class='row'>
 										<div class='col-md-6' style='padding: 5px 15px;'>
-												<img style='    width: 27%;' class="img-rank2" src="https://shoplienquan.vn/img/qua-cap-1.gif">
+												<img style='    width: 27%;' class="img-rank2" src="/statics/frontend/images/qua-cap-1.gif">
 										</div>
 										<div class='col-md-6' style='padding: 5px 15px;'>
 											<button   onclick="muaNick(<?=$ramdomProduct['id']?>)" class="btn btn-danger">Mua ngay</button>
