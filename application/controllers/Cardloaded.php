@@ -19,7 +19,7 @@ class Cardloaded extends MY_Controller
     public function callbackTrumthe()
     {
         $validate = $this->ValidateCallback();
-
+        $data=array();
         if ($validate != false) { //Nếu xác thực callback đúng thì chạy vào đây.
             $status = $validate['status']; //Trạng thái thẻ nạp, thẻ thành công = 1, thẻ thất bại != 1, xem bảng mã lỗi.
             $desc = $validate['desc']; //Mô tả chi tiết lỗi.
@@ -27,26 +27,27 @@ class Cardloaded extends MY_Controller
             $pin = $validate['card_data']['pin']; //Mã pin của thẻ.
             $card_type = $validate['card_data']['card_type']; //Loại thẻ. vd: VTT, VMS, VNP.
             $amount = $validate['card_data']['amount']; //Mệnh giá của thẻ.
-            $content = $validate['content']; //Nội dung quý khách đã đẩy lên ở phần nạp thẻ.
+            $content = $validate['card_data']['content']; //Nội dung quý khách đã đẩy lên ở phần nạp thẻ.
 
             if ($status == 1) {
-                $trumthe247->WriteLog('trumthe247_callback_success.txt', json_encode($validate)); //Ghi log để debug.
+                // $trumthe247->WriteLog('trumthe247_callback_success.txt', json_encode($validate)); //Ghi log để debug.
+                $arr= array();
                 $post = array('status' => 1, 'message' => $desc);
-                $arr['where'] = array('code' => $pin, 'seri' => $serial);
-                $data['return'] = $this->card_model->update($post, $where, 'card_loaded');
+                $arr['where'] = array('code' => $pin, 'seri' => $serial,'id_use'=>$content);
+                $data['return'] = $this->card_model->update($post, $arr['where'], 'card_loaded');
 
             } else {
-                $trumthe247->WriteLog('trumthe247_callback_failed.txt', json_encode($validate)); //Ghi log để debug.
+                // $trumthe247->WriteLog('trumthe247_callback_failed.txt', json_encode($validate)); //Ghi log để debug.
+                $arr= array();
                 $post = array('status' => 1, 'message' => $desc);
-                $arr['where'] = array('code' => $pin, 'seri' => $serial);
-                $data['return'] = $this->card_model->update($post, $where, 'card_loaded');
+                $arr['where'] = array('code' => $pin, 'seri' => $serial,'id_use'=>$content);
+                $data['return'] = $this->card_model->update($post, $arr['where'], 'card_loaded');
             }
-        }
+        } 
     }
 
     public function index()
     {
-        // đây là code phần nạp thẻ
         $data = array();
         $checkLogin = $this->check_use;
         $data['check_login'] = $this->check_use;
@@ -68,7 +69,7 @@ class Cardloaded extends MY_Controller
                         $data['return']['status'] = 1;
                         $data['return']['mes'] = 'Bạn cần nhập đầy đủ thông tin';
                     } else {
-                        $note = 'nạp card  pin : ' . $pin . ' serial: ' . $seri; //đây là ghi chú gửi lên hệ thống để validate người dùng khi bên mình gửi về, ví dụ là UID của người nạp.
+                        $note = $checkLogin['id']; //đây là ghi chú gửi lên hệ thống để validate người dùng khi bên mình gửi về, ví dụ là UID của người nạp.
 
                         if ($amount < 50000) {
                             $type .= '2';
@@ -79,36 +80,11 @@ class Cardloaded extends MY_Controller
                         if ($charge_result == false) { //Có lỗi trong quá trình đẩy thẻ.
                             $data['return']['status'] = 1;
                             $data['return']['mes'] = 'Có lỗi trong quá trình xử lý, xin thử lại hoặc liên hệ Admin';
-                            $arr = array(
-                                'id_use' => $checkLogin['id'],
-                                'code' => $pin,
-                                'seri' => $seri,
-                                'denominations' => $amount,
-                                'type' => $type,
-                                'before' => 0,
-                                'after' => 0,
-                                'published' => time(),
-                                'status' => 1,
-                                'message' => 'Có lỗi trong quá trình xử lý, xin thử lại hoặc liên hệ Admin',
-                            );
-                            $this->card_model->insert($arr, 'card_loaded');
 
                         } else if (is_string($charge_result)) { //Có lỗi trả về của hệ thống TRUMTHE247.COM.
                             $data['return']['status'] = 1;
                             $data['return']['mes'] = $charge_result;
-                            $arr = array(
-                                'id_use' => $checkLogin['id'],
-                                'code' => $pin,
-                                'seri' => $seri,
-                                'denominations' => $amount,
-                                'type' => $type,
-                                'before' => 0,
-                                'after' => 0,
-                                'published' => time(),
-                                'status' => 1,
-                                'message' => $charge_result,
-                            );
-                            $this->card_model->insert($arr, 'card_loaded');
+
                         } else if (is_object($charge_result)) { //Gửi thẻ thành công lên hệ thống.
                             $data['return']['status'] = 0;
                             $data['return']['mes'] = 'Gửi thẻ thành công!';
@@ -129,19 +105,6 @@ class Cardloaded extends MY_Controller
                         } else {
                             $data['return']['status'] = 1;
                             $data['return']['mes'] = 'Có lỗi trong quá trình xử lý';
-                            $arr = array(
-                                'id_use' => $checkLogin['id'],
-                                'code' => $pin,
-                                'seri' => $seri,
-                                'denominations' => $amount,
-                                'type' => $type,
-                                'before' => 0,
-                                'after' => 0,
-                                'published' => time(),
-                                'status' => 0,
-                                'message' => 'Có lỗi trong quá trình xử lý',
-                            );
-                            $this->card_model->insert($arr, 'card_loaded');
                         }
                     }
                 }
@@ -166,6 +129,7 @@ class Cardloaded extends MY_Controller
             $_POST['card_data']['real_amount'],
             $_POST['card_data']['charge_time']
         )) {
+
             if ($_POST['api_key'] == $this->API_KEY && $_POST['api_secret'] == $this->API_SECRET) { //Xác thực API, tránh kẻ lạ gửi dữ liệu ảo.
                 return $_POST; //xác thực thành công, return mảng dữ liệu từ TRUMTHE247.COM trả về.
             }
@@ -277,7 +241,7 @@ class Cardloaded extends MY_Controller
         if (!is_array($dataPost)) {
             return false;
         }
-        
+
         $dataPost = http_build_query($dataPost);
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);

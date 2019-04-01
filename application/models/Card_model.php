@@ -120,7 +120,7 @@ class Card_model extends CI_Model {
         $updated = $this->db->affected_rows();
         if (isset($updated) && $updated !=0)
         {
-            return  array('title' =>'success','text' =>'Update success','id'=>$where['id']);
+            return  array('title' =>'success','text' =>'Update success','id'=>isset($where['id'])?$where['id']:'');
         }
         else{
             return  array('title' =>'error','text' =>'Update error ! ');
